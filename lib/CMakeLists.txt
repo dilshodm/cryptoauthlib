@@ -98,7 +98,7 @@ execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/${DEPENDENCY_DIR}/wolfssl_downloader/)
 execute_process(COMMAND ${CMAKE_COMMAND} --build .
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/${DEPENDENCY_DIR}/wolfssl_downloader/)
-        
+
 #file(GLOB WOLFSSL_LIB_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "../third_party/wolfssl/wolfcrypt/src/*.c")
 
 set(WOLFSSL_LIB_SRC ../third_party/wolfssl/wolfcrypt/src/aes.c
@@ -262,7 +262,9 @@ if(ATCA_PKCS11)
 configure_file(pkcs11/pkcs11_config.h.in pkcs11_config.h @ONLY)
 endif()
 
-include_directories(cryptoauth PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ../app/tng ../third_party/hidapi/hidapi ${USB_INCLUDE_DIR})
+target_include_directories(cryptoauth
+    PUBLIC  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}> $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    PRIVATE ../app/tng ../third_party/hidapi/hidapi ${USB_INCLUDE_DIR})
 
 if(ATCA_MBEDTLS)
 target_link_libraries(cryptoauth mbedtls)
